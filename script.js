@@ -32,6 +32,7 @@ function handleKeyboardInput (event){
     }
 }
 
+
 document.addEventListener('keydown', handleKeyboardInput)
 
 let computerPaddleYPosition = 0;
