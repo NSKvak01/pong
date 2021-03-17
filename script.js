@@ -15,6 +15,7 @@ const  ball = document.querySelector('.ball');
 ball.style.borderRadius = '12px';
 ball.style.backgroundColor = 'yellow';
 
+
 // Get the computer paddle element
 const computerPaddle = document.querySelector('.computer-paddle');
 const leftPaddle = document.querySelector('.player-paddle');
@@ -23,6 +24,16 @@ computerPaddle.style.backgroundColor = 'blue' // Initial computer paddle y-posit
 leftPaddle.style.borderRadius = '8px'
 leftPaddle.style.backgroundColor = 'purple'
 
+function handleKeyboardInput (event){
+    if (event.key=== 'ArrowDown'){
+        leftPaddleYPosition +=50
+    } else if (event.key === 'ArrowUp'){
+        leftPaddleYPosition -=50
+    }
+}
+
+document.addEventListener('keydown', handleKeyboardInput)
+
 let computerPaddleYPosition = 0;
 let computerPaddleYVelocity = 1;
 
@@ -30,9 +41,9 @@ let leftPaddleYPosition = 0;
 let leftPaddleYVelocity = 1;
 
 let ballXPosition = 20;
-let ballXVelocity = 1;
+let ballXVelocity = 5;
 let ballYPosition = 0;
-let ballYVelocity = 1;
+let ballYVelocity = 5;
 // Update the pong world
 
 function update() {
@@ -45,6 +56,12 @@ function update() {
         computerPaddleYPosition = GAME_AREA_HEIGHT-PADDLE_HEIGHT;
     } else if(computerPaddleYPosition<0){
         computerPaddleYPosition = 0
+    }
+
+    if (leftPaddleYPosition > GAME_AREA_HEIGHT-PADDLE_HEIGHT) {
+        leftPaddleYPosition = GAME_AREA_HEIGHT-PADDLE_HEIGHT;
+    } else if(leftPaddleYPosition<0){
+        leftPaddleYPosition = 0;
     }
 
     // Update ball's position   
@@ -64,8 +81,8 @@ function update() {
     }else if (ballXPosition>GAME_AREA_WIDTH-PADDLE_WIDTH*2 || ballXPosition <= PADDLE_WIDTH){
         ballXPosition = 20
         ballYPosition = 0
-        ballXVelocity = 1;
-        ballYVelocity = 1;
+        ballXVelocity = 5;
+        ballYVelocity = 5;
         ballXPosition = ballXPosition + ballXVelocity
         ballYPosition = ballYPosition + ballYVelocity
 
@@ -74,30 +91,12 @@ function update() {
     computerPaddle.style.top = `${computerPaddleYPosition}px`;
     ball.style.left = `${ballXPosition}px`;
     ball.style.top = `${ballYPosition}px`;
-
-
-document.addEventListener('keydown', paddleMove)
-
-document.addEventListener('keyup', paddleNotMove)
-}
-
-function paddleNotMove (e){
-    leftPaddleYPosition = leftPaddleYPosition
-}
-
-function paddleMove (e){
-    const arrow = e.key;
-    if(arrow === 'ArrowDown'){
-        leftPaddleYPosition +=leftPaddleYVelocity;
-    } else if (arrow === 'ArrowUp'){
-        leftPaddleYPosition +=leftPaddleYVelocity*(-1);
-    }
+    leftPaddle.style.top = `${leftPaddleYPosition}px`
 }
 
 
 function loop() {
     update();
-
     window.requestAnimationFrame(loop);
 }
 window.requestAnimationFrame(loop);
